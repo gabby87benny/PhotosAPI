@@ -21,8 +21,6 @@ public enum Result {
     case failure(Error)
 }
 
-typealias QueryResult = (Result) -> ()
-
 public class APIManager {
     lazy var urlSession: URLSession = {
         let config = URLSessionConfiguration.default
@@ -35,6 +33,15 @@ public class APIManager {
     }
     
     var pError = PhotosError.PhotosErrorNone
+    
+    /**
+    Fetches photos from Photos API.
+
+    - Parameters:
+       - completion: The completion handler to be fired once the operations are over
+     
+    - Returns: None.
+    */
     
     public func fetchPhotos(completion: @escaping (Result) -> ()) {
         
@@ -74,6 +81,15 @@ public class APIManager {
 
     }
     
+    /**
+    Parses the data using JSON Decoder.
+
+    - Parameters:
+       - data: The data to be parsed
+     
+    - Returns: An optional Photo model.
+    */
+    
     private func parseData(_ data: Data) -> [Photo]? {
                 
         do {
@@ -86,6 +102,15 @@ public class APIManager {
         }
         
     }
+    
+    /**
+    Validates if the response is valid.
+
+    - Parameters:
+       - optionalResponse: The url response obtained from the request
+     
+    - Returns: A Boolean that indicates if the response is valid.
+    */
     
     private func isValidResponse(optionalResponse: URLResponse?) -> Bool {
         guard let response = optionalResponse as? HTTPURLResponse, response.statusCode == 200 else { return false }
